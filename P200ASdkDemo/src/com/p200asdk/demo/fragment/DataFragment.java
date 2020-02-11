@@ -135,31 +135,47 @@ public class DataFragment extends BaseFragment {
 		if (v == btnAnalysis) {
 			progressDialog.show();
 			//下载历史数据前，建议停止原始数据上报，实时数据上报
-			getP200AHelper().stopOriginalData(3000, new IResultCallback<Void>() {
-				@Override
-				public void onResultCallback(CallbackData<Void> cd) {
-					// TODO Auto-generated method stub
-					if(!isFragmentVisible()){
-						return;
-					}
-					if(cd.getCallbackType() == IMonitorManager.METHOD_RAW_DATA_CLOSE) {
-						SdkLog.log(TAG+" stopOriginalData cd:" + cd);
-					}
-				}
-			});
+//			getP200AHelper().stopOriginalData(3000, new IResultCallback<Void>() {
+//				@Override
+//				public void onResultCallback(CallbackData<Void> cd) {
+//					// TODO Auto-generated method stub
+//					if(!isFragmentVisible()){
+//						return;
+//					}
+//					if(cd.getCallbackType() == IMonitorManager.METHOD_RAW_DATA_CLOSE) {
+//						SdkLog.log(TAG+" stopOriginalData cd:" + cd);
+//					}
+//				}
+//			});
+			
 			//下载历史数据前，建议停止原始数据上报，实时数据上报
-			getP200AHelper().stopRealTimeData(3000, new IResultCallback<Void>() {
+//			getP200AHelper().stopRealTimeData(3000, new IResultCallback<Void>() {
+//				@Override
+//				public void onResultCallback(CallbackData<Void> cd) {
+//					// TODO Auto-generated method stub
+//					if(!isFragmentVisible()){
+//						return;
+//					}
+//					if(cd.getCallbackType() == IMonitorManager.METHOD_REALTIME_DATA_CLOSE) {
+//						SdkLog.log(TAG+" stopRealTimeData cd:" + cd);
+//					}
+//				}
+//			});
+			
+			//下载历史数据前，建议停止原始数据上报，实时数据上报
+			getP200AHelper().stopCollection(3000, new IResultCallback<Void>() {
 				@Override
 				public void onResultCallback(CallbackData<Void> cd) {
 					// TODO Auto-generated method stub
 					if(!isFragmentVisible()){
 						return;
 					}
-					if(cd.getCallbackType() == IMonitorManager.METHOD_REALTIME_DATA_CLOSE) {
-						SdkLog.log(TAG+" stopRealTimeData cd:" + cd);
+					if(cd.getCallbackType() == IMonitorManager.METHOD_COLLECT_STOP) {
+						SdkLog.log(TAG+" stopCollection cd:" + cd);
 					}
 				}
 			});
+			
 			//printLog(R.string.data_analyzed);
 			Calendar cal = Calendar.getInstance();
 			int endTime = (int) (cal.getTimeInMillis() / 1000);
