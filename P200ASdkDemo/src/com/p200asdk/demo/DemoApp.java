@@ -4,7 +4,6 @@ import com.p200asdk.demo.util.CrashHandler;
 import com.sleepace.sdk.util.SdkLog;
 
 import android.app.Application;
-import android.os.Environment;
 
 
 public class DemoApp extends Application {
@@ -23,7 +22,7 @@ public class DemoApp extends Application {
         instance = this;
         CrashHandler.getInstance().init(this);
         SdkLog.setLogEnable(true);
-        String logDir = Environment.getExternalStorageDirectory()+"/p200asdkdemo/log";
+        String logDir = getExternalFilesDir("log").getPath();
         SdkLog.setLogDir(logDir);
         SdkLog.setSaveLog(true);
     }

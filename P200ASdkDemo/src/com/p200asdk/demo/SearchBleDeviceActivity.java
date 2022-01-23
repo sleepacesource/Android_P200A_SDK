@@ -207,6 +207,8 @@ public class SearchBleDeviceActivity extends BaseActivity {
 		            	deviceName = deviceName.trim();
 		            }
 		            
+		            deviceName  = modelName;
+		            
 		            if(!TextUtils.isEmpty(modelName) && !TextUtils.isEmpty(deviceName)){
 		            	BleDevice ble = new BleDevice();
 		            	ble.setModelName(modelName);

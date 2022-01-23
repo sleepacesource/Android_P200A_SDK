@@ -9,9 +9,11 @@ import com.sleepace.sdk.p200a.P200AHelper;
 import com.sleepace.sdk.p200a.domain.LoginBean;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -28,7 +30,7 @@ public class ConnectDeviceActivity extends BaseActivity {
     
     private BleDevice device;
     private P200AHelper p200aHelper;
-    //private SharedPreferences mSetting;
+    private SharedPreferences mSetting;
     
     private static final String[] DEVICE_CODE = new String[]{
     		DeviceCode.P200A, //全自动枕头-默认材质
@@ -40,7 +42,7 @@ public class ConnectDeviceActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connect_device);
         p200aHelper = P200AHelper.getInstance(this);
-        //mSetting = getSharedPreferences("config", Context.MODE_PRIVATE);
+        mSetting = getSharedPreferences("config", Context.MODE_PRIVATE);
         findView();
         initListener();
         initUI();
@@ -65,9 +67,9 @@ public class ConnectDeviceActivity extends BaseActivity {
     	device = (BleDevice) getIntent().getSerializableExtra("device");
         tvTitle.setText(R.string.connect_device);
         printLog(null);
-//        String uid = mSetting.getString("uid", "100");
-//        etUserId.setText(uid);
-//        etUserId.setSelection(etUserId.length());
+        String uid = mSetting.getString("uid", "2544");
+        etUserId.setText(uid);
+        etUserId.setSelection(etUserId.length());
         
 //        String code = DEVICE_CODE[0];
 //		tvDeviceCode.setText(code);

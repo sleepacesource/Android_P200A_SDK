@@ -371,9 +371,13 @@ public class DeviceFragment extends BaseFragment {
 //				crcBin = 1766804836l;
 //				crcDes = 2138129606l;
 				
-				is = getResources().getAssets().open("P200A_HP00X_20190827_V1.11(0.0.2)_Release_Update.des");
-				crcBin = 256003259l;
-				crcDes = 1119821362l;
+//				is = getResources().getAssets().open("P200A_HP00X_20190827_V1.11(0.0.2)_Release_Update.des");
+//				crcBin = 256003259l;
+//				crcDes = 1119821362l;
+				
+				is = getResources().getAssets().open("P200A_HP00X_20200918_V1.16(2.0.2)_Debug.des");
+				crcBin = 3139951181l;
+				crcDes = 677987245l;
 				break;
 			default:
 				break;
