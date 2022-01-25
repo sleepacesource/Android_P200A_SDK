@@ -239,10 +239,10 @@ public class DataFragment extends BaseFragment {
 		// longData = createLongReportData(1500649565, 714);
 		// longData = createLongReportData1(1642695891, 421);
 //		longData = createLongReportData1(1642868610, 430);
-		longData = createLongReportData1(1642782105, 409, 
-				SleepData.Data_1642782105_409.data1, SleepData.Data_1642782105_409.data2, 
-				SleepData.Data_1642782105_409.data3, SleepData.Data_1642782105_409.data4);
-		
+//		longData = createLongReportData1(1642782105, 409, 
+//				SleepData.Data_1642782105_409.data1, SleepData.Data_1642782105_409.data2, 
+//				SleepData.Data_1642782105_409.data3, SleepData.Data_1642782105_409.data4);
+		longData = createLongReportData1(1643039573, 511, SleepData.Data_1643039573_511.data2, SleepData.Data_1643039573_511.data3);
 	}
 
 	private void initShortReportView(HistoryData historyData) {
@@ -760,19 +760,22 @@ public class DataFragment extends BaseFragment {
 		return historyData;
 	}
 
-	private HistoryData createLongReportData1(int starttime, int count, int[] data1, int[] data2, int[] data3, int[] data4) {
+	private HistoryData createLongReportData1(int starttime, int count, int[] data2, int[] data3) {
 		HistoryData historyData = new HistoryData();
 		Summary summ = new Summary();
 		summ.setStartTime(starttime);
 		summ.setRecordCount(count);
 		summ.setArithmeticVer("02.00.01");
 		historyData.setSummary(summ);
-
 		Detail detail = new Detail();
-		detail.setHeartRate(data1);
+		int[] data14 = new int[count];
+		for(int i=0;i<count;i++) {
+			data14[i] = -1;
+		}
+		detail.setHeartRate(data14);
 		detail.setBreathRate(data2);
 		detail.setStatus(data3);
-		detail.setStatusValue(data4);
+		detail.setStatusValue(data14);
 		historyData.setDetail(detail);
 		Analysis analysis = AnalysisUtil.analysData(summ, detail, 0);
 		SdkLog.log(TAG + " createLongReportData analysis:" + analysis);
