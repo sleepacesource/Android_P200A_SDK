@@ -242,7 +242,8 @@ public class DataFragment extends BaseFragment {
 //		longData = createLongReportData1(1642782105, 409, 
 //				SleepData.Data_1642782105_409.data1, SleepData.Data_1642782105_409.data2, 
 //				SleepData.Data_1642782105_409.data3, SleepData.Data_1642782105_409.data4);
-		longData = createLongReportData1(1643039573, 511, SleepData.Data_1643039573_511.data2, SleepData.Data_1643039573_511.data3);
+//		longData = createLongReportData1(1643039573, 511, SleepData.Data_1643039573_511.data2, SleepData.Data_1643039573_511.data3);
+		longData = createLongReportData1(1629651612, 493, SleepData.Data_1629651612_493.data2, SleepData.Data_1629651612_493.data3);
 	}
 
 	private void initShortReportView(HistoryData historyData) {
