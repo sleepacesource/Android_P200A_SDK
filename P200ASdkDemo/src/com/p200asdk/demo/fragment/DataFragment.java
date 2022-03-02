@@ -137,91 +137,18 @@ public class DataFragment extends BaseFragment {
 		if (v == btnAnalysis) {
 			progressDialog.show();
 			// 下载历史数据前，建议停止原始数据上报，实时数据上报
-			// getP200AHelper().stopOriginalData(3000, new IResultCallback<Void>() {
-			// @Override
-			// public void onResultCallback(CallbackData<Void> cd) {
-			// // TODO Auto-generated method stub
-			// if(!isFragmentVisible()){
-			// return;
-			// }
-			// if(cd.getCallbackType() == IMonitorManager.METHOD_RAW_DATA_CLOSE) {
-			// SdkLog.log(TAG+" stopOriginalData cd:" + cd);
-			// }
-			// }
-			// });
-
-			// 下载历史数据前，建议停止原始数据上报，实时数据上报
-			// getP200AHelper().stopRealTimeData(3000, new IResultCallback<Void>() {
-			// @Override
-			// public void onResultCallback(CallbackData<Void> cd) {
-			// // TODO Auto-generated method stub
-			// if(!isFragmentVisible()){
-			// return;
-			// }
-			// if(cd.getCallbackType() == IMonitorManager.METHOD_REALTIME_DATA_CLOSE) {
-			// SdkLog.log(TAG+" stopRealTimeData cd:" + cd);
-			// }
-			// }
-			// });
-
-			// 下载历史数据前，建议停止原始数据上报，实时数据上报
-			getP200AHelper().stopCollection(3000, new IResultCallback<Void>() {
+			getP200AHelper().stopOriginalData(3000, new IResultCallback<Void>() {
 				@Override
 				public void onResultCallback(CallbackData<Void> cd) {
 					// TODO Auto-generated method stub
 					if (!isFragmentVisible()) {
 						return;
 					}
-					if (cd.getCallbackType() == IMonitorManager.METHOD_COLLECT_STOP) {
-						SdkLog.log(TAG + " stopCollection cd:" + cd);
+					if (cd.getCallbackType() == IMonitorManager.METHOD_RAW_DATA_CLOSE) {
+						SdkLog.log(TAG + " stopOriginalData cd:" + cd);
 					}
-				}
-			});
-
-			// printLog(R.string.data_analyzed);
-			Calendar cal = Calendar.getInstance();
-			int endTime = (int) (cal.getTimeInMillis() / 1000);
-			cal.add(Calendar.DATE, -1);
-			cal.set(Calendar.HOUR_OF_DAY, 20);
-			cal.set(Calendar.MINUTE, 0);
-			cal.set(Calendar.SECOND, 0);
-			int startTime = (int) (cal.getTimeInMillis() / 1000);
-			getP200AHelper().historyDownload(0, endTime, 1, new IResultCallback<List<HistoryData>>() {
-				@Override
-				public void onResultCallback(final CallbackData<List<HistoryData>> cd) {
-					// TODO Auto-generated method stub
-					mActivity.runOnUiThread(new Runnable() {
-						@Override
-						public void run() {
-							// TODO Auto-generated method stub
-							if (!isFragmentVisible()) {
-								return;
-							}
-
-							progressDialog.dismiss();
-							if (checkStatus(cd)) {
-								List<HistoryData> list = cd.getResult();
-								SdkLog.log(TAG + " historyDownload size:" + list.size());
-								if (list.size() > 0) {
-									Collections.sort(list, new HistoryDataComparator());
-									HistoryData historyData = list.get(0);
-									Detail detail = historyData.getDetail();
-									SdkLog.log(TAG + " historyDownload status:" + Arrays.toString(detail.getStatus()));
-									SdkLog.log(TAG + " historyDownload statusVal:" + Arrays.toString(detail.getStatusValue()));
-									SdkLog.log(TAG + " historyDownload first data duration:" + historyData.getSummary().getRecordCount() + ",algorithmVer:" + historyData.getAnalysis().getAlgorithmVer());
-									if (historyData.getAnalysis().getReportFlag() == 1) {// 长报告
-										initLongReportView(historyData);
-									} else {
-										initShortReportView(historyData);
-									}
-								} else {
-									Toast.makeText(mActivity, R.string.hint_analyze_fail, Toast.LENGTH_LONG).show();
-								}
-							} else {
-								SdkLog.log(TAG + " historyDownload fail cd:" + cd);
-							}
-						}
-					});
+					
+					stopRealTimeData();
 				}
 			});
 		} else if (v == btnShort) {
@@ -232,6 +159,94 @@ public class DataFragment extends BaseFragment {
 			initLongReportView(longData);
 		}
 	}
+	
+	
+	private void stopRealTimeData() {
+		// 下载历史数据前，建议停止原始数据上报，实时数据上报
+		getP200AHelper().stopRealTimeData(3000, new IResultCallback<Void>() {
+			@Override
+			public void onResultCallback(CallbackData<Void> cd) {
+				// TODO Auto-generated method stub
+				if (!isFragmentVisible()) {
+					return;
+				}
+				if (cd.getCallbackType() == IMonitorManager.METHOD_REALTIME_DATA_CLOSE) {
+					SdkLog.log(TAG + " stopRealTimeData cd:" + cd);
+				}
+				
+				stopCollection();
+			}
+		});
+	}
+	
+	private void stopCollection() {
+		// 下载历史数据前，建议停止原始数据上报，实时数据上报
+		getP200AHelper().stopCollection(3000, new IResultCallback<Void>() {
+			@Override
+			public void onResultCallback(CallbackData<Void> cd) {
+				// TODO Auto-generated method stub
+				if (!isFragmentVisible()) {
+					return;
+				}
+				if (cd.getCallbackType() == IMonitorManager.METHOD_COLLECT_STOP) {
+					SdkLog.log(TAG + " stopCollection cd:" + cd);
+				}
+				downloadHistoryData();
+			}
+		});
+	}
+	
+	
+	private void downloadHistoryData() {
+		// printLog(R.string.data_analyzed);
+		Calendar cal = Calendar.getInstance();
+		int endTime = (int) (cal.getTimeInMillis() / 1000);
+		cal.set(Calendar.MONTH, 1);
+		cal.set(Calendar.DAY_OF_MONTH, 28);
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		int startTime = (int) (cal.getTimeInMillis() / 1000);
+		getP200AHelper().historyDownload(startTime, endTime, 1, new IResultCallback<List<HistoryData>>() {
+			@Override
+			public void onResultCallback(final CallbackData<List<HistoryData>> cd) {
+				// TODO Auto-generated method stub
+				mActivity.runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						if (!isFragmentVisible()) {
+							return;
+						}
+
+						progressDialog.dismiss();
+						if (checkStatus(cd)) {
+							List<HistoryData> list = cd.getResult();
+							SdkLog.log(TAG + " historyDownload size:" + list.size());
+							if (list.size() > 0) {
+								Collections.sort(list, new HistoryDataComparator());
+								HistoryData historyData = list.get(0);
+								Detail detail = historyData.getDetail();
+								SdkLog.log(TAG + " historyDownload status:" + Arrays.toString(detail.getStatus()));
+								SdkLog.log(TAG + " historyDownload statusVal:" + Arrays.toString(detail.getStatusValue()));
+								SdkLog.log(TAG + " historyDownload first data duration:" + historyData.getSummary().getRecordCount() + ",algorithmVer:" + historyData.getAnalysis().getAlgorithmVer());
+								if (historyData.getAnalysis().getReportFlag() == 1) {// 长报告
+									initLongReportView(historyData);
+								} else {
+									initShortReportView(historyData);
+								}
+							} else {
+								Toast.makeText(mActivity, R.string.hint_analyze_fail, Toast.LENGTH_LONG).show();
+							}
+						} else {
+							SdkLog.log(TAG + " historyDownload fail cd:" + cd);
+						}
+					}
+				});
+			}
+		});
+	}
+	
 
 	private void initDemoData() {
 		// TODO Auto-generated method stub
