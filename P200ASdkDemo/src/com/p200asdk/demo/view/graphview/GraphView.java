@@ -1055,7 +1055,7 @@ abstract public class GraphView extends LinearLayout {
 					paint.setTextSize(myLabelsSize);
 					paint.setColor(getResources().getColor(R.color.COLOR_3));
 					String strT = horlabels[i];
-					SdkLog.log(TAG+" drawHorizontalLabels beginTimes:"+beginTimes+",timezone:"+timezone+",dst_off:"+dst_off+",labels:" + Arrays.toString(horlabels));
+//					SdkLog.log(TAG+" drawHorizontalLabels beginTimes:"+beginTimes+",timezone:"+timezone+",dst_off:"+dst_off+",labels:" + Arrays.toString(horlabels));
 					// String str="";
 					if (beginTimes > 0) {
 						// SleepLog.e("得到的结果1"+strT);

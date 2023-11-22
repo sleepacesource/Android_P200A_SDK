@@ -573,6 +573,7 @@ public class DataFragment extends BaseFragment {
 		Summary summ = new Summary();
 		summ.setStartTime(starttime);
 		summ.setRecordCount(count);
+		summ.setArithmeticVer("02.00.01");
 		historyData.setSummary(summ);
 
 		Detail detail = new Detail();

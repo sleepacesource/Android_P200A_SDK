@@ -209,34 +209,16 @@ public class DeviceFragment extends BaseFragment {
 		// TODO Auto-generated method stub
 		super.onClick(v);
 		if (v == btnUpgrade) {
-			new AlertDialog.Builder(mActivity).setTitle("选择固件版本").setItems(new String[] { "1.15", "1.16" }, new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					// TODO Auto-generated method stub
-					InputStream is = null;
-					long crcBin = 0, crcDes = 0;
-					try {
-						if (which == 0) {
-							is = getResources().getAssets().open("P200A_HP00X_20200903_V1.15(2.0.2)_Release_Update.des");
-							crcBin = 994006840l;
-							crcDes = 2006298185l;
-						} else {
-							is = getResources().getAssets().open("P200A_HP00X_20200918_V1.16(2.0.2)_Debug.des");
-							crcBin = 3139951181l;
-							crcDes = 677987245l;
-						}
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-
-					FirmwareBean bean = new FirmwareBean();
-					bean.is = is;
-					bean.crcBin = crcBin;
-					bean.crcDes = crcDes;
-					upgrade(bean);
-				}
-			}).setNegativeButton(android.R.string.cancel, null).create().show();
+			try {
+				FirmwareBean bean = new FirmwareBean();
+				bean.is = getResources().getAssets().open("P200A_HP00X-v1.22r(v2.0.10r)-u-20231109.des");
+				bean.crcBin = 3597493674l;
+				bean.crcDes = 1097605837l;
+				upgrade(bean);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			};
 		} else if (v == btnDeviceName) {
 			// printLog(R.string.getting_device_name);
 			MainActivity.deviceName = mActivity.getDevice().getDeviceName();
